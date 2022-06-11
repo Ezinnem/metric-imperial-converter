@@ -48,7 +48,7 @@ function ConvertHandler() {
       case "mi":
         return "mi";
       case "l":
-        return "l";
+        return "L";
       case "kg":
         return "kg";
       default:
