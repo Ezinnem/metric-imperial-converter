@@ -74,74 +74,11 @@ suite('Functional Tests', function() {
           });
           done();
         })
-      })
-    
-      suite("Function converHandler.convert(num, unit)", function(){
-        test("Gal to L", function (done){
-          let input = [5, "gal"];
-          let expected = 18.9271;
-          assert.approximately(
-            convertHandler.convert(input[0], input[1]),
-            expected,
-            0.1
-          );
-          done();
-        });
-    
-        test("L to Gal", function (done){
-          let input = [5, "L"];
-          let expected = 1.32086;
-          assert.approximately(
-            convertHandler.convert(input[0], input[1]),
-            expected,
-            0.1
-          );
-          done();
-        });
-    
-        test("Mi to Km", function (done){
-          let input = [5, "Mi"];
-          let expected = 8.04671;
-          assert.approximately(
-            convertHandler.convert(input[0], input[1]),
-            expected,
-            0.1
-          );
-          done();
-        });
-    
-        test("Km to Mi", function (done){
-          let input = [5, "Km"];
-          let expected = 3.12086;
-          assert.approximately(
-            convertHandler.convert(input[0], input[1]),
-            expected,
-            0.1
-          );
-          done();
-        });
-    
-        test("Lbs to Kg", function (done){
-          let input = [5, "Lbs"];
-          let expected = 2.26769;
-          assert.approximately(
-            convertHandler.convert(input[0], input[1]),
-            expected,
-            0.1
-          );
-          done();
-        });
-    
-        test("Kg to Lbs", function (done){
-          let input = [5, "Kg"];
-          let expected = 11.02312;
-          assert.approximately(
-            convertHandler.convert(input[0], input[1]),
-            expected,
-            0.1
-          );
-          done();
-        });
-      });
         
+        test('Invalid Number (Double fraction)', function(done){
+            let input = '2/4/25L';
+            assert.equal(convertHandler.getNum(input), undefined);
+            done();
+          });
+      })
 });
