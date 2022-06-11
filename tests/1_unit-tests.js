@@ -51,7 +51,7 @@ suite('Unit Tests', function(){
     test("For Each Valid Unit", function(done) {
       let input = [
         "gal",
-        "L",
+        "l",
        "mi",
        "km",
        "lbs",
