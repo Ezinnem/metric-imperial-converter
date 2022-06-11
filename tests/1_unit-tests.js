@@ -66,13 +66,13 @@ suite('Unit Tests', function(){
 
       let output = [
        "gal",
-       "l",
+       "L",
        "mi",
        "km",
        "lbs",
        "kg",
        "gal",
-       "l",
+       "L",
        "mi",
        "km",
        "lbs",
