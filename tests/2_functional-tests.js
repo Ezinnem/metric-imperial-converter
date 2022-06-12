@@ -12,7 +12,7 @@ suite('Functional Tests', function() {
   suite('Routing Tests', function() {
 
     suite("Get /api/convert => conversion object", function() {
-      test('Convert 10L(valid input)', function(done){
+      test('Convert 10L (valid input)', function(done){
         chai.request(server)
         .get('/api/convert')
         .query({input: '10L'})
@@ -48,10 +48,10 @@ suite('Functional Tests', function() {
         });
       });
 
-      test('Convert 3/7.2/4kilomegogram (invalid number and unit)', function(done){
+      test('Convert 3/7.2/4kilomegagram (invalid number and unit)', function(done){
         chai.request(server)
         .get("/api/convert")
-        .query({input: "3/7.2/4kilomegogram"})
+        .query({input: "3/7.2/4kilomegagram"})
         .end(function (err, res){
           assert.equal(res.status, 200);
           assert.equal(res.body.initNum, undefined);
