@@ -5,80 +5,75 @@ const server = require('../server');
 
 
 chai.use(chaiHttp);
-const ConvertHandler = require('../controllers/convertHandler.js');
 
-let convertHandler = new ConvertHandler();
 
 
 suite('Functional Tests', function() {
-    suite ("Function convertHandler.getUnit(input)", function (){
-        test("For Each Valid Unit", function(done) {
-          let input = [
-            "gal",
-            "L",
-           "mi",
-           "km",
-           "lbs",
-           "kg",
-           "GAL",
-           "L",
-           "MI",
-           "KM",
-           "LBS",
-           "KG"
-          ];
-    
-          let output = [
-           "gal",
-           "L",
-           "mi",
-           "km",
-           "lbs",
-           "kg",
-           "gal",
-           "L",
-           "mi",
-           "km",
-           "lbs",
-           "kg",
-          ];
-          input.forEach(function (element,index) {
-            assert.equal(convertHandler.getUnit(element), output[index])
-          });
-          done();
-        });
-    
-        test("Unknown Unit", function(done){
-          assert.equal(convertHandler.getUnit("34kilograms"), undefined)
+  suite('Routing Tests', function() {
+
+    suite("Get /api/convert => conversion object", function() {
+      test('Convert 10L(valid input)', function(done){
+        chai.request(server)
+        .get('/api/convert')
+        .query({input: '10L'})
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.body.initNum, 10);
+          assert.equal(res.body.initUnit, 'L');
+          assert.approximately(res.body.returnNum, 2.64172, 0.1);
+          assert.equal(res.body.returnUnit, 'gal');
           done();
         });
       });
-    
-      suite("Function convertHandler.getReturnUnit(initUnit)", function(){
-        test("For each Valid Unit", function(done){
-          let input = ["gal","l","mi","km","lbs","kg",];
-          let expect = ["L", "gal", "km", "mi", "kg", "lbs"];
-          input.forEach(function (element, i){
-            assert.equal(convertHandler.getReturnUnit(element), expect[i])
-          });
+
+      test('Convert 32g (invalid input unit)', function(done){
+        chai.request(server)
+        .get("/api/convert")
+        .query({input: "32g"})
+        .end(function (err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.body.initUnit, undefined);
           done();
-        })
-      })
-    
-      suite("Function convertHandler.spellOutUnit(unit)", function(){
-        test("For Each Valid Unit Inputs", function(done){
-          let input = ["gal","l","mi","km","lbs","kg",];
-          let expect = ["gallons","litres","miles","kilometers","pounds","kilograms",];
-          input.forEach(function (element, i){
-            assert.equal(convertHandler.spellOutUnit(element), expect[i])
-          });
+        });
+      });
+
+      test('Convert 3/7.2/4kg (invalid Number)', function(done){
+        chai.request(server)
+        .get("/api/convert")
+        .query({input: "3/7.2/4kg"})
+        .end(function (err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.body.initNum, undefined);
           done();
-        })
-        
-        test('Invalid Number (Double fraction)', function(done){
-            let input = '2/4/25L';
-            assert.equal(convertHandler.getNum(input), undefined);
-            done();
-          });
-      })
+        });
+      });
+
+      test('Convert 3/7.2/4kilomegogram (invalid number and unit)', function(done){
+        chai.request(server)
+        .get("/api/convert")
+        .query({input: "3/7.2/4kilomegogram"})
+        .end(function (err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.body.initNum, undefined);
+          assert.equal(res.body.initUnit, undefined);
+          done();
+        });
+      });
+
+      test('Convert kg (no number)', function(done){
+        chai.request(server)
+        .get("/api/convert")
+        .query({input: "kg"})
+        .end(function (err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.body.initNum, 1);
+          assert.equal(res.body.initUnit, 'kg');
+          assert.approximately(res.body.returnNum, 2.20462, 0.1);
+          assert.equal(res.body.returnUnit, 'lbs');
+          done();
+        });
+
+      });
+    })
+});
 });
