@@ -1,4 +1,4 @@
-'use strict';
+
 
 const express     = require('express');
 const bodyParser  = require('body-parser');
@@ -39,11 +39,12 @@ app.use(function(req, res, next) {
 });
 
 const port = process.env.PORT || 3000;
+let testNode = process.env.NODE_ENV || 'test'
 
 //Start our server and tests!
 app.listen(port, function () {
   console.log("Listening on port " + port);
-  if(process.env.NODE_ENV==='test') {
+  if(testNode ==='test') {
     console.log('Running Tests...');
     setTimeout(function () {
       try {
@@ -52,7 +53,7 @@ app.listen(port, function () {
           console.log('Tests are not valid:');
           console.error(e);
       }
-    }, 1500);
+    }, 5000);
   }
 });
 
